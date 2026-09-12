@@ -1,0 +1,42 @@
+:root{
+  --bg:#f7f6f2;--ink:#111111;--muted:#6f6d66;--line:#dedad0;--accent:#ff4d3d;--panel:#efece3;--maxw:1180px;
+}
+[data-theme="dark"]{
+  --bg:#111214;--ink:#f5f4f0;--muted:#9a988f;--line:#2a2b2e;--accent:#ff6a53;--panel:#1a1b1e;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--ink);font-family:'Space Grotesk',sans-serif;line-height:1.5;transition:background .3s ease,color .3s ease;}
+a{color:inherit;text-decoration:none;}
+ul{list-style:none;}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 32px;}
+
+header{position:sticky;top:0;z-index:100;background:var(--bg);border-bottom:1px solid var(--line);}
+.nav{display:flex;align-items:center;justify-content:space-between;padding:20px 32px;max-width:var(--maxw);margin:0 auto;gap:20px;position:relative;}
+.logo{font-weight:700;font-size:1.05rem;}
+.logo span{color:var(--accent);}
+.nav-links{display:flex;gap:30px;font-family:'JetBrains Mono',monospace;font-size:.82rem;}
+.nav-links a{color:var(--muted);padding-bottom:3px;border-bottom:1px solid transparent;transition:color .2s;}
+.nav-links a:hover,.nav-links a[aria-current="page"]{color:var(--ink);border-color:var(--ink);}
+.menu-btn{display:none;background:none;border:1px solid var(--line);border-radius:8px;font-size:1.1rem;padding:6px 10px;color:var(--ink);cursor:pointer;}
+.theme-btn{background:none;border:1px solid var(--line);border-radius:100px;width:38px;height:38px;cursor:pointer;font-size:1rem;}
+
+.skills{padding:90px 0;}
+.eyebrow{font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--muted);text-transform:uppercase;margin-bottom:18px;}
+.page-title{font-size:clamp(2rem,4.5vw,3.2rem);font-weight:700;letter-spacing:-.02em;margin-bottom:48px;}
+.skills-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border:1px solid var(--line);}
+.skill-card{background:var(--bg);padding:32px 28px;transition:background .2s ease;}
+.skill-card:hover{background:var(--panel);}
+.skill-tag{font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--accent);margin-bottom:18px;display:block;}
+.skill-card h3{font-size:1.2rem;font-weight:600;margin-bottom:10px;}
+.skill-card p{color:var(--muted);font-size:.92rem;line-height:1.6;}
+
+footer{padding:26px 0;border-top:1px solid var(--line);}
+.foot-row{display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:.75rem;color:var(--muted);flex-wrap:wrap;gap:10px;}
+
+@media (max-width:860px){
+  .nav-links{position:absolute;top:100%;left:0;right:0;background:var(--bg);flex-direction:column;padding:20px 32px;border-bottom:1px solid var(--line);display:none;}
+  .nav-links.open{display:flex;}
+  .menu-btn{display:block;}
+  .skills-grid{grid-template-columns:1fr;}
+}
