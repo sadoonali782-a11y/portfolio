@@ -102,3 +102,60 @@
   send.onclick = () => sendMessage();
   input.addEventListener("keydown", (e) => { if (e.key === "Enter") sendMessage(); });
 })();
+// Popup message above the chat button
+(function () {
+  const toggle = document.getElementById('cbToggle');
+  const win = document.getElementById('cbWindow');
+  if (!toggle || !win) return;
+
+  const MESSAGE = "Hi! 👋 Ask me about Sadoon's projects and skills.";
+  const SHOW_AFTER = 3000;    // 3 seconds after the page loads
+  const HIDE_AFTER = 10000;   // disappears after 10 seconds
+
+  // show only once per visit (per browser tab session)
+  try { if (sessionStorage.getItem('cb-popup-seen')) return; } catch (e) {}
+
+  const style = document.createElement('style');
+  style.textContent = `
+    .cb-popup{position:fixed;right:20px;bottom:88px;max-width:240px;display:flex;align-items:flex-start;gap:8px;
+      background:var(--bg);color:var(--ink);border:1px solid var(--line);border-radius:16px;
+      padding:12px 14px;font-family:'Space Grotesk',sans-serif;font-size:.88rem;line-height:1.4;
+      box-shadow:0 8px 24px rgba(0,0,0,.18);z-index:998;cursor:pointer;
+      opacity:0;transform:translateY(8px);pointer-events:none;transition:opacity .3s ease,transform .3s ease}
+    .cb-popup.show{opacity:1;transform:none;pointer-events:auto}
+    .cb-popup::after{content:"";position:absolute;bottom:-7px;right:24px;width:12px;height:12px;
+      background:var(--bg);border-right:1px solid var(--line);border-bottom:1px solid var(--line);transform:rotate(45deg)}
+    .cb-popup-close{background:none;border:none;color:var(--muted);font-size:18px;line-height:1;cursor:pointer;padding:0}
+    .cb-popup-close:hover{color:var(--ink)}
+    @media (max-width:500px){.cb-popup{right:12px;bottom:80px;max-width:200px}}
+  `;
+  document.head.appendChild(style);
+
+  const pop = document.createElement('div');
+  pop.className = 'cb-popup';
+  const text = document.createElement('span');
+  text.textContent = MESSAGE;
+  const close = document.createElement('button');
+  close.className = 'cb-popup-close';
+  close.textContent = '×';
+  close.setAttribute('aria-label', 'Dismiss message');
+  pop.append(text, close);
+  document.body.appendChild(pop);
+
+  let hideTimer;
+  function hide() {
+    pop.classList.remove('show');
+    clearTimeout(hideTimer);
+  }
+
+  setTimeout(() => {
+    if (win.classList.contains('active')) return;   // chat already open
+    pop.classList.add('show');
+    try { sessionStorage.setItem('cb-popup-seen', '1'); } catch (e) {}
+    hideTimer = setTimeout(hide, HIDE_AFTER);
+  }, SHOW_AFTER);
+
+  close.addEventListener('click', (e) => { e.stopPropagation(); hide(); });
+  pop.addEventListener('click', () => { hide(); toggle.click(); });
+  toggle.addEventListener('click', hide);
+})();
