@@ -63,3 +63,4 @@ footer{padding:26px 0;border-top:1px solid var(--line);}
 #typed{color:var(--accent)}
 .cursor{display:inline-block;width:2px;height:1.1em;background:var(--accent);margin-left:3px;vertical-align:text-bottom;animation:blink 1s steps(1) infinite}
 @keyframes blink{50%{opacity:0}}
+ 
