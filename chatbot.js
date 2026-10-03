@@ -159,3 +159,46 @@
   pop.addEventListener('click', () => { hide(); toggle.click(); });
   toggle.addEventListener('click', hide);
 })();
+// Animations: page fade-in, hover effects, floating photo, scroll reveal
+(function () {
+  // respect visitors who turn off motion in their system settings
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  const style = document.createElement('style');
+  style.textContent = `
+    body{animation:pageIn .6s ease}
+    @keyframes pageIn{from{opacity:0}to{opacity:1}}
+
+    .reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease}
+    .reveal.visible{opacity:1;transform:none}
+
+    .btn{transition:transform .2s ease,background .2s,color .2s,border-color .2s}
+    .btn:hover{transform:translateY(-3px)}
+    .btn:active{transform:scale(.97)}
+
+    .project-card{transition:transform .25s ease,box-shadow .25s ease,opacity .7s ease}
+    .project-card.visible:hover{transform:translateY(-6px);box-shadow:0 12px 28px rgba(0,0,0,.12)}
+
+    .hero-img{animation:float 4s ease-in-out infinite}
+    @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+  `;
+  document.head.appendChild(style);
+
+  // mark the elements that should fade up when scrolled into view
+  const targets = document.querySelectorAll('.project-card, .page-title, .eyebrow, .hero-text');
+  targets.forEach((el, i) => {
+    el.classList.add('reveal');
+    el.style.transitionDelay = (i % 4) * 0.1 + 's';   // small stagger
+  });
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);   // animate only once
+      }
+    });
+  }, { threshold: 0.15 });
+
+  targets.forEach((el) => observer.observe(el));
+})();
